@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;netstandard2.0;net452;net461;net472;;net48;netcoreapp2.0;netcoreapp2.1;netcoreapp3</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Description>EntityFramework query extension or IQuerable extension for getting page data from database for views or it can also apply on generic list to get data with page definition</Description>
+    <Authors>UmairSyed (@umairsyed613)</Authors>
+    <Copyright>UmairSyed (@umairsyed613)</Copyright>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/umairsyed613/EntityFramework.Extensions.Pagination</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/umairsyed613/EntityFramework.Extensions.Pagination</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>EntityFramework WebPagination WebPageData Pagination PageData Page IQuery IQuerable List GenericList ICollection IList</PackageTags>
+    <PackageReleaseNotes>EntityFramework query extension or IQuerable extension for getting page data from database for views or it can also apply on generic list to get data with page definition</PackageReleaseNotes>
+    <NeutralLanguage>English</NeutralLanguage>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>false</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

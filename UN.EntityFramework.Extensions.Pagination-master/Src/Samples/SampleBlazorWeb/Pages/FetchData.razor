@@ -1,0 +1,103 @@
+@page "/fetchdata"
+@inject HttpClient Http
+@using System.Text.Json
+@using Newtonsoft.Json.Converters
+@using Newtonsoft.Json.Serialization
+@using SampleBlazorWeb.Models
+@using UN.EntityFramework.Extensions
+@using UN.EntityFramework.Extensions.Pagination
+
+<h1>Pagination on Api Result</h1>
+
+<h3>Total Items : @totalItems</h3>
+<h3>Page Nr : @PageNr</h3>
+<h3>Page Size : @PageSize</h3>
+<div class="d-flex flex-row justify-content-between mb-3 mt-2">
+    <button @onclick="@PreviousPage">PreviousPage</button>
+    <button @onclick="@NextPage">NextPage</button>
+</div>
+
+@if (ApiResults == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>PostId</th>
+                <th>Name</th>
+                <th>Body</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var comment in PageResult)
+            {
+                <tr>
+                    <td>@comment.id</td>
+                    <td>@comment.postId</td>
+                    <td>@comment.name</td>
+                    <td>@comment.body</td>
+                    <td>@comment.email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private int totalItems = 0;
+    private int PageNr = 1;
+    private int PageSize = 20;
+
+    private List<Comment> ApiResults;
+    private List<Comment> PageResult;
+
+    protected override async Task OnInitializedAsync()
+    {
+        DefaultContractResolver contractResolver = new DefaultContractResolver
+        {
+            NamingStrategy = new CamelCaseNamingStrategy()
+        };
+
+        var jsonResult = await Http.GetFromJsonAsync<object>("https://jsonplaceholder.typicode.com/comments");
+
+        ApiResults = JsonConvert.DeserializeObject<List<Comment>>(jsonResult.ToString(), new JsonSerializerSettings
+        {
+            ContractResolver = contractResolver,
+            Formatting = Formatting.Indented
+        });
+
+        LoadFirstPage();
+    }
+
+    private void LoadFirstPage()
+    {
+        if (ApiResults == null || !ApiResults.Any())
+        {
+            return;
+        }
+
+        PageResult = ApiResults.AsQueryable().TakePageResult(new PageQuery { PageNr = PageNr, PageSize = PageSize }).ToList();
+        totalItems = ApiResults.Count;
+        StateHasChanged();
+    }
+
+    private void NextPage()
+    {
+        PageNr++;
+        PageResult = ApiResults.AsQueryable().TakePageResult(new PageQuery { PageNr = PageNr, PageSize = PageSize }).ToList();
+        StateHasChanged();
+    }
+    
+    private void PreviousPage()
+    {
+        PageNr--;
+        PageResult = ApiResults.AsQueryable().TakePageResult(new PageQuery { PageNr = PageNr, PageSize = PageSize }).ToList();
+        StateHasChanged();
+    }
+
+}
